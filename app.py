@@ -40,12 +40,18 @@ app = Flask(__name__)
 
 # create an engine to conenct to our database and perform sql queries
 #---------------------------------
-engine = create_engine('sqlite:///db/DATABASE NAME GOES HERE', echo=False)
+engine = create_engine('sqlite:///C:\\Users\\zulim2\\Downloads\\Analytics\\World-Cup-Analysis\\data\\world_cup_db.db', echo=False)
 conn = engine.connect()
 
 Base = automap_base()
 Base.prepare(engine, reflect=True)
 session = Session(engine)
+
+# if statement that sets year = to certain year
+year = 1994
+
+df = pd.DataFrame(engine.execute(f"SELECT team, abrv, WC_{year}, FIFA_{year} FROM world_cup_db WHERE WC_{year} > 0").fetchall()) 
+df
 
 # reflect the db tables into classes
 #-------------------------------
