@@ -40,11 +40,7 @@ app = Flask(__name__)
 
 # create an engine to conenct to our database and perform sql queries
 #---------------------------------
-<<<<<<< HEAD
 engine = create_engine('sqlite:///db/world_cup_db', echo=False)
-=======
-engine = create_engine('sqlite:///C:\\Users\\zulim2\\Downloads\\Analytics\\World-Cup-Analysis\\data\\world_cup_db.db', echo=False)
->>>>>>> e76370a15fa22a8a6ec26a840e4ec7033e542d2d
 conn = engine.connect()
 
 Base = automap_base()
