@@ -40,18 +40,27 @@ app = Flask(__name__)
 
 # create an engine to conenct to our database and perform sql queries
 #---------------------------------
-engine = create_engine('sqlite:///db/DATABASE NAME GOES HERE', echo=False)
+<<<<<<< HEAD
+engine = create_engine('sqlite:///db/world_cup_db', echo=False)
+=======
+engine = create_engine('sqlite:///C:\\Users\\zulim2\\Downloads\\Analytics\\World-Cup-Analysis\\data\\world_cup_db.db', echo=False)
+>>>>>>> e76370a15fa22a8a6ec26a840e4ec7033e542d2d
 conn = engine.connect()
 
 Base = automap_base()
 Base.prepare(engine, reflect=True)
 session = Session(engine)
 
+# if statement that sets year = to certain year
+year = 1994
+
+df = pd.DataFrame(engine.execute(f"SELECT team, abrv, WC_{year}, FIFA_{year} FROM world_cup_db WHERE WC_{year} > 0").fetchall()) 
+df
+
 # reflect the db tables into classes
 #-------------------------------
-1992 = Base.classes.'NAME FOR DATABASE WITH specific year'
-1996 = Base.classes.'year of 1996'
-cup_data = Base.classes.'NAME FOR DATABASE WITH METADATA FOR EACH WORLD CUP'
+rankings_data = Base.classes.world_cup_db
+# cup_data = Base.classes.'NAME FOR DATABASE WITH METADATA FOR EACH WORLD CUP'
 
 # Flask Routes
 #-------------------------------
@@ -60,25 +69,26 @@ def index():
     return render_template("index.html")
 
 #grab the data on each country's rankings from the table for the specified year
-@app.route("/country_data/<year>")
-def country_data(year):
-    rankings = year
-    return jsonify(rankings)
+@app.route("/db") #STEVEN: LEAVE THE APP ROUTE IN PLACE
+def db():
+    db_query = session.query(select * from rankings_data)
+    rankings = db.query
+    return jsonify(rankings) #STEVEN: LEAVE THE RETURN NAME 'RANKINGS' IN PLACE
 
 #grab the world cup metadata for the specified year
-@app.route("/cup_data/<year>")
-def cup_data(year):
-    year_query = session.query(cup_data.STUFF!, metadata.BBTYPE, metadata.ETHNICITY, metadata.GENDER, metadata.LOCATION, metadata.SAMPLEID).\
-        filter(cup_data.year).one()
-    year_dict = {
-        # 'AGE': meta_one[0], 
-        # 'BBTYPE': meta_one[1], 
-        # 'ETHNICITY': meta_one[2], 
-        # 'GENDER': meta_one[3], 
-        # 'LOCATION': meta_one[4], 
-        # 'SAMPLEID': meta_one[5]
-        # }
-    return jsonify(year_dict)
+# @app.route("/cup_data/<year>")
+# def cup_data(year):
+#     year_query = session.query(cup_data.STUFF!, metadata.BBTYPE, metadata.ETHNICITY, metadata.GENDER, metadata.LOCATION, metadata.SAMPLEID).\
+#         filter(cup_data.year).one()
+#     year_dict = {
+#         # 'AGE': meta_one[0], 
+#         # 'BBTYPE': meta_one[1], 
+#         # 'ETHNICITY': meta_one[2], 
+#         # 'GENDER': meta_one[3], 
+#         # 'LOCATION': meta_one[4], 
+#         # 'SAMPLEID': meta_one[5]
+#         # }
+#     return jsonify(year_dict)
 
 if __name__ == "__main__":
     app.run(debug=True)
