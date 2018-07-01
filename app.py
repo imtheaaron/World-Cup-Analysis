@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import create_engine
 import pandas as pd
+import json
 
 app = Flask(__name__)
 
@@ -40,22 +41,16 @@ app = Flask(__name__)
 
 # create an engine to conenct to our database and perform sql queries
 #---------------------------------
-engine = create_engine('sqlite:///db/world_cup_db', echo=False)
-conn = engine.connect()
+engine = create_engine('sqlite:///C:\\Users\\zulim2\\Downloads\\Analytics\\World-Cup-Analysis\\data\\world_cup.db', echo=False)
+#FYI could not figure out how to make the following path relative, update as needed
 
-Base = automap_base()
-Base.prepare(engine, reflect=True)
-session = Session(engine)
-
-# if statement that sets year = to certain year
-year = 1994
-
-df = pd.DataFrame(engine.execute(f"SELECT team, abrv, WC_{year}, FIFA_{year} FROM world_cup_db WHERE WC_{year} > 0").fetchall()) 
-df
+# Base = automap_base()
+# Base.prepare(engine, reflect=True)
+# session = Session(engine)
 
 # reflect the db tables into classes
 #-------------------------------
-rankings_data = Base.classes.world_cup_db
+#rankings_data = Base.classes.world_cup_db
 # cup_data = Base.classes.'NAME FOR DATABASE WITH METADATA FOR EACH WORLD CUP'
 
 # Flask Routes
@@ -64,14 +59,40 @@ rankings_data = Base.classes.world_cup_db
 def index():
     return render_template("index.html")
 
-#grab the data on each country's rankings from the table for the specified year
+#grab the data on each country's rankings
 @app.route("/db") #STEVEN: LEAVE THE APP ROUTE IN PLACE
 def db():
-    db_query = session.query(select * from rankings_data)
-    rankings = db.query
-    return jsonify(rankings) #STEVEN: LEAVE THE RETURN NAME 'RANKINGS' IN PLACE
+    rankings_data = engine.execute("SELECT * FROM rankings_table").fetchall()
+    rankings_headers = engine.execute("SELECT * FROM rankings_table").keys()
 
-#grab the world cup metadata for the specified year
+    rankings_json_data = []
+
+    for row in rankings_data:
+        rankings_json_data.append(dict(zip(rankings_headers, row)))
+
+    rankings = json.dumps(rankings_json_data)
+    
+    return rankings #STEVEN: LEAVE THE RETURN NAME 'RANKINGS' IN PLACE
+
+
+
+#grab the world cup metadata
+@app.route("/metadata")
+def metadata():
+    metadata_data = engine.execute("SELECT * FROM metadata_table").fetchall()
+    metadata_headers = engine.execute("SELECT * FROM metadata_table").keys()
+
+    metadata_json = []
+
+    for row in metadata_data:
+        metadata_json.append(dict(zip(metadata_headers, row)))
+
+    metadata = json.dumps(metadata_json)
+    
+    return metadata
+
+
+#grab the world cup data for the specified year
 # @app.route("/cup_data/<year>")
 # def cup_data(year):
 #     year_query = session.query(cup_data.STUFF!, metadata.BBTYPE, metadata.ETHNICITY, metadata.GENDER, metadata.LOCATION, metadata.SAMPLEID).\
