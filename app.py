@@ -71,9 +71,7 @@ def db():
 
     rankings = json.dumps(rankings_json_data)
     
-    return rankings #STEVEN: LEAVE THE RETURN NAME 'RANKINGS' IN PLACE
-
-
+    return rankings
 
 #grab the world cup metadata
 @app.route("/metadata")
@@ -89,22 +87,6 @@ def metadata():
     metadata = json.dumps(metadata_json)
     
     return metadata
-
-
-#grab the world cup data for the specified year
-# @app.route("/cup_data/<year>")
-# def cup_data(year):
-#     year_query = session.query(cup_data.STUFF!, metadata.BBTYPE, metadata.ETHNICITY, metadata.GENDER, metadata.LOCATION, metadata.SAMPLEID).\
-#         filter(cup_data.year).one()
-#     year_dict = {
-#         # 'AGE': meta_one[0], 
-#         # 'BBTYPE': meta_one[1], 
-#         # 'ETHNICITY': meta_one[2], 
-#         # 'GENDER': meta_one[3], 
-#         # 'LOCATION': meta_one[4], 
-#         # 'SAMPLEID': meta_one[5]
-#         # }
-#     return jsonify(year_dict)
 
 if __name__ == "__main__":
     app.run(debug=True)
