@@ -41,8 +41,7 @@ app = Flask(__name__)
 
 # create an engine to conenct to our database and perform sql queries
 #---------------------------------
-engine = create_engine('sqlite:///C:\\Users\\zulim2\\Downloads\\Analytics\\World-Cup-Analysis\\data\\world_cup.db', echo=False)
-#FYI could not figure out how to make the following path relative, update as needed
+engine = create_engine('sqlite:///db/world_cup_db', echo=False)
 
 # Base = automap_base()
 # Base.prepare(engine, reflect=True)
