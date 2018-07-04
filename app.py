@@ -41,7 +41,8 @@ app = Flask(__name__)
 
 # create an engine to conenct to our database and perform sql queries
 #---------------------------------
-engine = create_engine('sqlite:///db/world_cup_db', echo=False)
+#STILL CAN'T GET IT TO WORK WITHOUT PUTTING IN MY CLONED REPO'S ABSOLUTE ADDRESS
+engine = create_engine('sqlite:///C:\\Users\\zulim2\\Downloads\\Analytics\\World-Cup-Analysis\\data\\world_cup.db', echo=False)
 
 # Base = automap_base()
 # Base.prepare(engine, reflect=True)
@@ -58,6 +59,13 @@ engine = create_engine('sqlite:///db/world_cup_db', echo=False)
 def index():
     return render_template("index.html")
 
+#this route is temporary for building/testing the scatterplot
+@app.route("/scatter/")
+def scatter():
+    return render_template("scatterplot.html")
+
+
+
 #grab the data on each country's rankings
 @app.route("/db") #STEVEN: LEAVE THE APP ROUTE IN PLACE
 def db():
@@ -73,20 +81,34 @@ def db():
     
     return rankings
 
-#grab the world cup metadata
-@app.route("/metadata")
-def metadata():
-    metadata_data = engine.execute("SELECT * FROM metadata_table").fetchall()
+
+#This route will be used for the scatter plot, it ranks qualifying teams 1-32 (or 24 etc.) based on their FIFA rank
+@app.route("/Qualifiers_Ranked/<year>/")
+def qualifiers(year):
+    rankings_data = engine.execute(f"SELECT Team, WC_{year}, FIFA_{year}, WC_All_Time FROM rankings_table WHERE WC_{year} > 0").fetchall()
+    rankings_headers = engine.execute(f"SELECT Team, WC_{year}, FIFA_{year}, WC_All_Time FROM rankings_table").keys()
+
+    rankings_zipped = []
+
+    for row in rankings_data:
+        rankings_zipped.append(dict(zip(rankings_headers, row)))
+    
+    return jsonify(rankings_zipped)
+
+
+#This route is for the WC metadata used to show info about each WC beside the map
+@app.route("/metadata/<year>/")
+def metadata(year):
+    metadata_data = engine.execute(f"SELECT * FROM metadata_table WHERE Year = {year}").fetchall()
     metadata_headers = engine.execute("SELECT * FROM metadata_table").keys()
 
-    metadata_json = []
+    metadata = []
 
     for row in metadata_data:
-        metadata_json.append(dict(zip(metadata_headers, row)))
-
-    metadata = json.dumps(metadata_json)
+        metadata.append(dict(zip(metadata_headers, row)))
     
-    return metadata
+    return jsonify(metadata)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

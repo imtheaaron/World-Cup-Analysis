@@ -41,34 +41,29 @@ function makeResponsive() {
   // Append group element
   var chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
- 
 
-  // Read CSV
-  d3.json("rankings_json.txt", function(err, rankings_data) {
+
+  year = "2010"
+
+  // Read data
+  d3.json(`/Qualifiers_Ranked/${year}/`, function(err, rankings_data) {
     // parse data
+
     rankings_data.forEach(function(data) {
-      if(data.WC_1994 < 1){
-        
-      } else{
         data.team = data.Team;
         data.abbreviation = data.ABRV;
-        data.WC = +data.WC_1994;
-        data.FIFA = +data.FIFA_1994;
+        data.WC = +data.WC_2010;
+        data.FIFA = +data.FIFA_2010;
         data.all_time = +data.WC_All_Time;
       }
-    });
-
-    // create scales
-    // var xLinearScale = d3.scaleLinear()
-    //   .domain(d3.extent(rankings_data, data => data.WC_1994))
-    //   .range([0, width]);
+    );
 
     var xLinearScale = d3.scaleLinear()
-      .domain([d3.max(rankings_data, data => data.FIFA), 1])
+      .domain([d3.max(rankings_data, data => data.WC), 1])
       .range([0, width]);
 
     var yLinearScale = d3.scaleLinear()
-      .domain([d3.max(rankings_data, data => data.WC), 0])
+      .domain([d3.max(rankings_data.filter(function (d) { return (d.WC > 0)}), data => data.FIFA), 1])
       .range([height, 0]);
 
     // create axes
@@ -83,26 +78,28 @@ function makeResponsive() {
     chartGroup.append("g")
       .call(yAxis);
 
+    // append performance seperation line
+    var lineGroup = chartGroup.append("line")
+      .attr("x1", 1)
+      .attr("y1", svgHeight-150)
+      .attr("x2", svgWidth)
+      .attr("y2", -60)
+      .attr("stroke-width", 1)
+      .attr("stroke", "black");
+
     // append circles
     var circlesGroup = chartGroup.selectAll("circle")
       .data(rankings_data)
       .enter()
+      .filter(function (d) { return (d.WC > 0)})
       .append("circle")
-      .attr("cx", d => xLinearScale(d.FIFA))
-      .attr("cy", d => yLinearScale(d.WC))
-      .attr("r", d => (30))
+      .attr("cx", d => xLinearScale(d.WC))
+      .attr("cy", d => yLinearScale(d.FIFA))
+      .attr("r", d => (d3.max(rankings_data.filter(function (d) { return (d.WC > 0)}), data => data.all_time)-(d.all_time*0.50)-20))
       .attr("fill", "lightseagreen")
       .attr("stroke-width", "3")
       .attr("stroke", "black")
       .attr("opacity", 0.8)
-      .append('line')
-      .attr("cx", )
-
-    // var circle = chartGroup.append("line")
-    //   .attr("x1", 24)
-    //   .attr("y1", 24)
-    //   .attr("x2", 1)
-    //   .attr("y2", 1);
 
     // Step 1: Initialize Tooltip
     var toolTip = d3.tip()
@@ -110,7 +107,7 @@ function makeResponsive() {
       .direction("s")
       .offset([10, -50])
       .html(function(d) {
-        return (`<strong>${d.team}</strong><br>All Time Rank: ${data.all_time}<br>WC Finish: ${Math.round(data.WC)}<br>FIFA Rank: ${Math.round(data.FIFA)}`);
+        return (`<strong>${d.team}</strong><br>FIFA Rank: ${Math.round(d.FIFA)}<br>WC Finish: ${Math.round(d.WC)}<hr>All Time Rank: ${d.all_time}`);
       });
 
     // Step 2: Create the tooltip in chartGroup.
@@ -132,7 +129,7 @@ function makeResponsive() {
     .attr("text-anchor", "middle")
     .attr("font-size", "16px")
     .attr("fill", "black")
-    .text("FIFA Rank")
+    .text("World Cup Result")
     .attr("id", "exerciseAxis");
 
     chartGroup.append("text")
@@ -141,7 +138,7 @@ function makeResponsive() {
     .attr("text-anchor", "middle")
     .attr("font-size", "16px")
     .attr("fill", "black")
-    .text("World Cup Result");
+    .text("FIFA Rank");
 
     // var axisLabels = chartGroup.selectAll("text")
     // axisLabels.on("click", xChosen = data.rent);
