@@ -79,19 +79,18 @@ function makeResponsive() {
       .attr("class", "aText active x")
       .text("World Cup Result");
 
-
-    var year = "1994"
+    var year = 1994;
     
     //import the data with d3's custom csv method
-    d3.json(`/Qualifiers_Ranked/${year}/`, function(jsonData) {
+    d3.json(`/Qualifiers_Ranked/`, function(jsonData) {
         visualize(jsonData);
     });
-
 
     //create a function that will plot our circles axis and tooltips
     function visualize(theData) {
         var curX = `WC_${year}`;
-        var curY = `FIFA_${year}`;
+        var curY = `Qualifiers_${year}`;
+        var FIFA_Rank = `FIFA_${year}`;
         var WC_All_Time = "WC_All_Time";
       
         var xMin;
@@ -104,9 +103,9 @@ function makeResponsive() {
         var toolTip = d3
         .tip()
         .attr("class", "tooltip")
-        .offset([100, -100])
+        .offset([50, 100])
         .html(function(d) {
-            return (`<h3>${d.Team}</h3>All Time World Cup Rank: ${(parseFloat(d[WC_All_Time])).toLocaleString("en")}<hr><strong> ${curX}: ${Math.round(d[curX])}<br>${curY}: ${Math.round(d[curY])}</strong>`);
+            return (`<h3>${d.Team}</h3><strong> World Cup Finish: ${Math.round(d[curX])}<br>FIFA Rank: ${Math.round(d[FIFA_Rank])}</strong><hr>All Time World Cup Rank: ${(parseFloat(d[WC_All_Time])).toLocaleString("en")}`);
         });
         svg.call(toolTip); //?? why do we call toolTip on the SVG??//
 
@@ -184,15 +183,15 @@ function makeResponsive() {
 
         // ADDING OUR ACTUAL DATA AKA "THE CIRCLES"
         // this new group will contain all future circles
-        var theCircles = svg.selectAll("g theCircles").data(theData).enter();
+        var theCircles = svg.selectAll("g theCircles").data(theData).enter().filter(function (d) { return (d[curX] > 0)});
 
         var radiusFactor;
         function crGet() {
             if (width <= 530 || height <=400) {
-                    radiusFactor = 10;
+                    radiusFactor = 2;
                 }
             else {
-                    radiusFactor = 5;
+                    radiusFactor = 1;
                 }
             }
         crGet();
@@ -210,7 +209,7 @@ function makeResponsive() {
         .append("circle")
         .attr("cx", function(d) {return xScale(d[curX]);})
         .attr("cy", function(d) {return yScale(d[curY]);})
-        .attr("r", d => rMax-(d[WC_All_Time]*0.60)-20)
+        .attr("r", d => rMax-(d[WC_All_Time]*0.60)-20/radiusFactor)
         .attr("fill", "lightseagreen")
         .attr("opacity", 0.8)
         .attr("stroke", "black")

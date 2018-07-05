@@ -83,10 +83,10 @@ def db():
 
 
 #This route will be used for the scatter plot, it ranks qualifying teams 1-32 (or 24 etc.) based on their FIFA rank
-@app.route("/Qualifiers_Ranked/<year>/")
-def qualifiers(year):
-    rankings_data = engine.execute(f"SELECT Team, WC_{year}, FIFA_{year}, WC_All_Time FROM rankings_table WHERE WC_{year} > 0").fetchall()
-    rankings_headers = engine.execute(f"SELECT Team, WC_{year}, FIFA_{year}, WC_All_Time FROM rankings_table").keys()
+@app.route("/Qualifiers_Ranked/")
+def qualifiers():
+    rankings_data = engine.execute(f"SELECT * FROM rankings_table").fetchall()
+    rankings_headers = engine.execute(f"SELECT * FROM rankings_table").keys()
 
     rankings_zipped = []
 
