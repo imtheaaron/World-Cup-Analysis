@@ -4,7 +4,10 @@
   height: 120px; commenting these out will make them size dynamically*/
   opacity: 1;
   padding: 7px;
-  font: 12px sans-serif;
+  line-height: 1;
+  line-height: 1.5em;
+  max-width: 200px;
+  font: 14px sans-serif;
   text-align: left;
   color: white;
   background: lightslategray;
@@ -15,24 +18,17 @@
 }
 
 .chart {
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
-.active {
-  font-weight: bold;
-  fill: #000;
-  transition: fill 0.3s ease-out;
+.countryText {
+  font-family: sans-serif;
+  fill: black;
   text-anchor: middle;
 }
 
-.inactive {
-  font-weight: lighter;
-  fill: darkgrey;
-  transition: fill 0.3s ease-out;
-  text-anchor: middle;
-}
-
-.inactive:hover {
-  fill: #000;
-  cursor: pointer;
+.performanceText {
+  font-family: sans-serif;
+  fill: lightgrey;
+  font-size: 35px;
 }

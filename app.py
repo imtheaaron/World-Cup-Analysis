@@ -59,34 +59,24 @@ engine = create_engine('sqlite:///C:\\Users\\zulim2\\Downloads\\Analytics\\World
 def index():
     return render_template("index.html")
 
-#this route is temporary for building/testing the scatterplot
+#temporary route for viewing/testing the scatterplot
 @app.route("/scatter/")
 def scatter():
     return render_template("scatterplot.html")
 
+#temporary route for viewing/testing slider on metadata
+@app.route("/slider/")
+def view_slider():
+    return render_template("slider_and_metadata.html")
 
 
-#grab the data on each country's rankings
-@app.route("/db") #STEVEN: LEAVE THE APP ROUTE IN PLACE
+
+
+#Full ranking data for scatterplot and map
+@app.route("/rankings/") #STEVEN: LEAVE THE APP ROUTE IN PLACE
 def db():
     rankings_data = engine.execute("SELECT * FROM rankings_table").fetchall()
     rankings_headers = engine.execute("SELECT * FROM rankings_table").keys()
-
-    rankings_json_data = []
-
-    for row in rankings_data:
-        rankings_json_data.append(dict(zip(rankings_headers, row)))
-
-    rankings = json.dumps(rankings_json_data)
-    
-    return rankings
-
-
-#This route will be used for the scatter plot, it ranks qualifying teams 1-32 (or 24 etc.) based on their FIFA rank
-@app.route("/Qualifiers_Ranked/")
-def qualifiers():
-    rankings_data = engine.execute(f"SELECT * FROM rankings_table").fetchall()
-    rankings_headers = engine.execute(f"SELECT * FROM rankings_table").keys()
 
     rankings_zipped = []
 
@@ -96,7 +86,8 @@ def qualifiers():
     return jsonify(rankings_zipped)
 
 
-#This route is for the WC metadata used to show info about each WC beside the map
+
+#This route is for the WC metadata used to show info about each WC alongside the map
 @app.route("/metadata/<year>/")
 def metadata(year):
     metadata_data = engine.execute(f"SELECT * FROM metadata_table WHERE Year = {year}").fetchall()
@@ -108,6 +99,7 @@ def metadata(year):
         metadata.append(dict(zip(metadata_headers, row)))
     
     return jsonify(metadata)
+
 
 
 if __name__ == "__main__":
