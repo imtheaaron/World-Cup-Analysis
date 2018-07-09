@@ -51,16 +51,17 @@ function makeMap(year) {
     d3.json(bordersUrl, function(response) {
         
         function onEachFeature(feature, layer) {
-            return style = {
-                "fillColor": fifaRankColor(feature.id, year),
-                "color": '#d4a22a',
-                "weight": 1,
-            }
+            layer.bindPopup("<h3>" + countryInfo(feature.id, year)[0] + "</h3><p>" + "Confederation: " + countryInfo(feature.id, year)[1] +
+          "<hr>" + year + " FIFA Ranking: " + countryInfo(feature.id, year)[2] + "<br>" + year + " WC Result: " + countryInfo(feature.id, year)[3] + "</p>");
         }
 
-
-
-        // var borders = L.geoJson(response);
+        var borders = L.geoJson(response, {
+            onEachFeature: onEachFeature,
+            style: {
+                "color": "#d4a22a",
+                "opacity": 0
+            }
+        });
         
         var fifaColors = L.geoJson(response, {
             style: function(feature) {
@@ -124,7 +125,7 @@ function makeMap(year) {
         var myMap = L.map("map", {
             center: [30.3429959, -5.8608298],
             zoom: 2,
-            layers: [lightMap, fifaColors]
+            layers: [lightMap, fifaColors, borders]
         });
 
         L.control.layers(baseMaps, overlayMaps, {
@@ -153,6 +154,26 @@ function makeMap(year) {
 //         //BUILD THE TEXT COMPONENTS FOR THE DIV WITH WC INFO
 //     })
 // }
+
+function countryInfo(country, year) {
+    var info = []
+    let query = "WC_" + year;
+    let fifaQuery = "FIFA_" + year;
+    rankings.forEach(x => {
+        if (x.ABRV == country) {
+            info.push(x.Team);
+            info.push(x.Confederation);
+            info.push("#" + x[fifaQuery]);
+            if (x[query]) {
+                info.push("Finished #" + x[query])
+            }
+            else {
+                info.push("Did not Play")
+            }
+        }
+    })
+    return info;
+}
 
 function fifaRankColor(country, year) {
     let fifaQuery = "FIFA_" + year;
