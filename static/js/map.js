@@ -12,25 +12,25 @@ d3.json('/rankings/', function(data) {
     rankings = data;
 });
 
-function buildmap() {
-    var lightMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?" +
-        mapboxKey);
+// function buildmap() {
+//     var lightMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?" +
+//         mapboxKey);
 
-    var baseMaps = {
-        "Light Map": lightMap,
-    };
+//     var baseMaps = {
+//         "Light Map": lightMap,
+//     };
 
-    var myMap = L.map("map", {
-        center: [30.3429959, -5.8608298],
-        zoom: 3,
-        layers: [lightMap] // borders, fifaColors]
-    });
+//     var myMap = L.map("map", {
+//         center: [30.3429959, -5.8608298],
+//         zoom: 3,
+//         layers: [lightMap] // borders, fifaColors]
+//     });
 
-};
+// };
 
-//build the initial map (2018)
+//build the initial map (1994)
 function init() {
-    // function to build the map with 2018 data
+    // function to build the map with 1994 data
     let year = '1994';
     selector();
     makeMap(year);
@@ -79,7 +79,7 @@ function makeMap(year) {
                 return {
                     color: '#cc2929',
                     weight: cupBorder(feature.id, year),
-                    fillOpacity: 0
+                    fillOpacity: 0,
                 };
             }   
         });
@@ -102,7 +102,7 @@ function makeMap(year) {
                 return {
                     fillColor: cupRecordColor(feature.id, year),
                     color: '#d6d9db',
-                    fillOpacity: 0.6,
+                    fillOpacity: 0.7,
                     weight: 0
                 };
             }
@@ -116,25 +116,78 @@ function makeMap(year) {
         mapboxKey);
 
         var baseMaps = {
-            "Dark Map": darkMap,
-            "Light Map": lightMap,
-        };
-
-        var overlayMaps = {
-            "Cup Qualifiers": cupQualifiers,
+            // "Dark Map": darkMap,
+            // "Light Map": lightMap,
             "Fifa Ranking": fifaColors,
             "World Cup Result": cupColors
         };
 
+        var overlayMaps = {
+            "Cup Qualifiers": cupQualifiers,
+            // "Fifa Ranking": fifaColors,
+            // "World Cup Result": cupColors
+        };
+
         var myMap = L.map("map", {
-            center: [30.3429959, -5.8608298],
+            center: [29.141044, 16.498359],
             zoom: 2,
-            layers: [darkMap, fifaColors, cupQualifiers]
+            layers: [lightMap, fifaColors, cupQualifiers]
         });
 
         L.control.layers(baseMaps, overlayMaps, {
             collapsed: false
             }).addTo(myMap);
+
+        //Make the Fifa cup qualifiers border be the top layer at all times
+        myMap.on("baselayerchange", function (event) {
+            cupQualifiers.bringToFront();
+            });
+
+        // Adding legend to the map
+        var textlabels = [
+            "Worst",
+            '',
+            '',
+            '',
+            '',
+            '',
+            'Best'
+        ];
+
+        var legend = L.control({position: 'bottomright'});
+        legend.onAdd = function () {
+            var div = L.DomUtil.create('div', 'legend');
+            var limits = [
+                50,
+                40,
+                30,
+                20,
+                10,
+                5,
+                3
+            ]
+            var colors = [
+                "#fefec9",
+                "#fee491",
+                "#fc9f4e",
+                "#fa733d",
+                "#ee3a2c",
+                "#b90929",
+                "#80002a"
+            ]
+            labels = [];
+            div.innerHTML = "<h4>Rankings/<br>Results</h4>";
+
+            // loop through our density intervals and generate a label with a colored square for each interval
+            for (var i = 0; i < limits.length; i++) {
+                div.innerHTML +=
+                    '<i style="background:' + colors[i] + '"></i> ' +
+                    textlabels[i] + '<br>';
+            }
+            return div;
+        };
+        legend.addTo(myMap);
+
 
 
     //if we do code to create metadata about the particular world cup
@@ -189,8 +242,8 @@ function fifaRankColor(country, year) {
     // });
 
     var fifaColorScale = d3.scaleSequential()
-        .domain([1, 100])
-        .interpolator(d3.interpolateViridis);
+        .domain([50, 1])
+        .interpolator(d3.interpolateYlOrRd);
 
     rankings.forEach(x => {
         if (x.ABRV == country) {
@@ -220,8 +273,8 @@ function cupRecordColor(country, year) {
     var finalColor;
 
     var cupColorScale = d3.scaleSequential()
-    .domain([24, 1])
-    .interpolator(d3.interpolateWarm);
+    .domain([16, 1])
+    .interpolator(d3.interpolateYlOrRd);
 
     rankings.forEach(x => {
         if (x.ABRV == country) {
