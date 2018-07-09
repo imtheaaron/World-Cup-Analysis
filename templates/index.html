@@ -24,10 +24,18 @@
     </div> 
 
     <div class='row'>
-      <div class='column md-6'>
+      <div class='col md-6'>
         <div id="map" style="height: 500px; width: 1000px"></div>
       </div>
-      <div class='column md-6'></div>
+      <div class='col md-6'></div>
+    </div>
+
+    <div class='row'>
+      <div class='col-md-2'>&nbsp;</div>
+      <div class='col-md-2'>
+        <h3>Select a Year</h3>  
+        <select id="yearSet" onchange="yearSelected(this.value)"></select>
+      </div>
     </div>
     <!--build the year selector here and call the change function when a new year is selected-->
     <!-- <select id="selDataset" onchange="yearSelected(this.value)"></select> -->

@@ -26,12 +26,25 @@ function buildmap() {
 //build the initial map (2018)
 function init() {
     // function to build the map with 2018 data
-    let year = '2014';
-    // buildmap();
+    let year = '1994';
+    selector();
     makeMap(year);
     // makeMetaData(year);
     // scatter(year);
         // slider(); 
+};
+
+function selector() {
+    var wcYears = ['1994', '1998', '2002', '2006', '2010', '2014', '2018'];
+
+    var select = document.getElementById("yearSet");
+    for(var i = 0; i < wcYears.length; i++) {
+        var id = wcYears[i];
+        var el = document.createElement("option");
+        el.textContent = id;
+        el.value = id;
+        select.appendChild(el);
+    }
 };
 
 // function to grab a year from the slider and recreate the map from that year data
@@ -39,9 +52,9 @@ function yearSelected(value) {
     var year = value;
     //INSTEAD OF REMAKING THE MAP HERE, JUST REMOVE A LAYER FROM THE LAYER GROUP WITH removeLayer()
     //THEN HAVE A FUNCTION THAT WILL CREATE A NEW LAYER WITH THE NEW DATA (also clearLayers() )
-    recolorMap(year);
-    makeMetaData(year);
-    scatter(year)
+    reColorMap(year);
+    // makeMetaData(year);
+    // scatter(year)
 };
  
 // create the map with country colors for the specified year
@@ -55,50 +68,35 @@ function makeMap(year) {
           "<hr>" + year + " FIFA Ranking: " + countryInfo(feature.id, year)[2] + "<br>" + year + " WC Result: " + countryInfo(feature.id, year)[3] + "</p>");
         }
 
-        var borders = L.geoJson(response, {
+        var cupQualifiers = L.geoJson(response, {
             onEachFeature: onEachFeature,
-            style: {
-                "color": "#d4a22a",
-                "opacity": 0
-            }
+            style: function(feature) {
+                return {
+                    color: '#cc2929',
+                    weight: cupBorder(feature.id, year),
+                    fillOpacity: 0
+                };
+            }   
         });
         
         var fifaColors = L.geoJson(response, {
+            onEachFeature: onEachFeature,
             style: function(feature) {
                 return {
                     fillColor: fifaRankColor(feature.id, year),
-                    color: '#d4a22a',
+                    color: '#d6d9db',
+                    weight: 0,
                     fillOpacity: 0.6
                 };
-            }
-            // style: function(feature) {
-                // color: '#dc0926'
-                // console.log('map color: ' + fifaRankColor(feature.id, year));
-                // fillColor: if (fifaRankColor(feature.id, year)) {
-                //     fifaRankColor(feature.id, year);
-                // }
-                //     else {
-                //         '#d6d9db'
-                // }
-                // color: '#d4a22a';
-                // weight: 1;
-                // // weight: cupBorder(feature.id, year);
-                // opacity: 1;
-                // fillOpacity: 0.8;
-            
+            }            
         });
 
-            // fillColor: fifaRankColor(feature.id, year),
-            // color: '#d4a22a',
-            // weight: cupBorder(feature.id, year),
-            // opacity: 1,
-            // fillOpacity: 0.8
-
         var cupColors =  L.geoJson(response, {
+            onEachFeature: onEachFeature,
             style: function(feature) {
                 return {
                     fillColor: cupRecordColor(feature.id, year),
-                    color: '#d4a22a',
+                    color: '#d6d9db',
                     fillOpacity: 0.6,
                     weight: 0
                 };
@@ -113,11 +111,12 @@ function makeMap(year) {
         mapboxKey);
 
         var baseMaps = {
-            "Light Map": lightMap,
             "Dark Map": darkMap,
+            "Light Map": lightMap,
         };
 
         var overlayMaps = {
+            "Cup Qualifiers": cupQualifiers,
             "Fifa Ranking": fifaColors,
             "World Cup Result": cupColors
         };
@@ -125,12 +124,13 @@ function makeMap(year) {
         var myMap = L.map("map", {
             center: [30.3429959, -5.8608298],
             zoom: 2,
-            layers: [lightMap, fifaColors, borders]
+            layers: [darkMap, fifaColors, cupQualifiers]
         });
 
         L.control.layers(baseMaps, overlayMaps, {
             collapsed: false
             }).addTo(myMap);
+
 
     //if we do code to create metadata about the particular world cup
     // let url = "/cup_data/" + year;
@@ -142,10 +142,6 @@ function makeMap(year) {
 
 };
 
-// function recolorMap(year) {
-//     //
-// };
-
 //create the metadata info on the specified world cup year
 // function makeMetaData(year) {
 //     let cup_url = "metadata/" + year;
@@ -155,6 +151,7 @@ function makeMap(year) {
 //     })
 // }
 
+//generates data on each country to make popups
 function countryInfo(country, year) {
     var info = []
     let query = "WC_" + year;
@@ -218,8 +215,8 @@ function cupRecordColor(country, year) {
     var finalColor;
 
     var cupColorScale = d3.scaleSequential()
-    .domain([1, 36])
-    .interpolator(d3.interpolateMagma);
+    .domain([24, 1])
+    .interpolator(d3.interpolateWarm);
 
     rankings.forEach(x => {
         if (x.ABRV == country) {
@@ -233,24 +230,67 @@ function cupRecordColor(country, year) {
                 finalColor = '#d6d9db'
             }
         }
-    })
+    });
     console.log(finalColor);
     return finalColor
 };
 
 function cupBorder(country, year) {
     let cupQuery = "WC_" + year; 
+    var borderWeight;
     rankings.forEach(x => {
         if (x.ABRV == country) {
-            if (x.cupQuery) {
-                return 1;
+            if (x[cupQuery]) {
+                borderWeight = 3;
             }
             else {
-                return 0;
+                borderWeight = 0;
             }
         }
-    })
+    });
+    return borderWeight;
 };
+
+// function reColorMap(year) {
+//     d3.json(bordersUrl, function(response) {
+        
+//         function onEachFeature(feature, layer) {
+//             layer.bindPopup("<h3>" + countryInfo(feature.id, year)[0] + "</h3><p>" + "Confederation: " + countryInfo(feature.id, year)[1] +
+//           "<hr>" + year + " FIFA Ranking: " + countryInfo(feature.id, year)[2] + "<br>" + year + " WC Result: " + countryInfo(feature.id, year)[3] + "</p>");
+//         }
+
+//         var borders = L.geoJson(response, {
+//             onEachFeature: onEachFeature,
+//             style: {
+//                 "color": "#d4a22a",
+//                 "opacity": 0
+//             }
+//         });
+        
+//         var fifaColors = L.geoJson(response, {
+//             onEachFeature: onEachFeature,
+//             style: function(feature) {
+//                 return {
+//                     fillColor: fifaRankColor(feature.id, year),
+//                     color: '#cc2929',
+//                     weight: cupBorder(feature.id, year),
+//                     fillOpacity: 0.6
+//                 };
+//             }
+//         });
+
+//         var cupColors =  L.geoJson(response, {
+//             onEachFeature: onEachFeature,
+//             style: function(feature) {
+//                 return {
+//                     fillColor: cupRecordColor(feature.id, year),
+//                     color: '#d4a22a',
+//                     fillOpacity: 0.6,
+//                     weight: 0
+//                 };
+//             }
+//         });
+// });
 
 // function slider() {
 //     // LOGIC TO BUILD SLIDER GOES HERE
