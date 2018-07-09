@@ -23,15 +23,20 @@
         <h1>Rankings Analysis</h1>
     </div> 
 
-    <div id="map"></div>
-
+    <div class='row'>
+      <div class='column md-6'>
+        <div id="map" style="height: 500px; width: 1000px"></div>
+      </div>
+      <div class='column md-6'></div>
+    </div>
     <!--build the year selector here and call the change function when a new year is selected-->
-    <select id="selDataset" onchange="yearSelected(this.value)"></select>
+    <!-- <select id="selDataset" onchange="yearSelected(this.value)"></select> -->
 
 
 
 <!-- Link to our JS file  -->
-<script src="{{ url_for('static', filename='js/logic.js') }}"></script>
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='js/scatterplot.js') }}"></script> -->
 
 </body>
 

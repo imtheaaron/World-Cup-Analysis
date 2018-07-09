@@ -41,8 +41,10 @@ app = Flask(__name__)
 
 # create an engine to conenct to our database and perform sql queries
 #---------------------------------
-#STILL CAN'T GET IT TO WORK WITHOUT PUTTING IN MY CLONED REPO'S ABSOLUTE ADDRESS
-engine = create_engine('sqlite:///C:\\Users\\zulim2\\Downloads\\Analytics\\World-Cup-Analysis\\data\\world_cup.db', echo=False)
+#Steven absolute address code"
+# engine = create_engine('sqlite:///C:\\Users\\zulim2\\Downloads\\Analytics\\World-Cup-Analysis\\data\\world_cup.db', echo=False)
+
+engine = create_engine('sqlite:///data/world_cup.db', echo=False)
 
 # Base = automap_base()
 # Base.prepare(engine, reflect=True)
@@ -60,31 +62,28 @@ def index():
     return render_template("index.html")
 
 #temporary route for viewing/testing the scatterplot
-@app.route("/scatter/")
+@app.route("/scatter")
 def scatter():
     return render_template("scatterplot.html")
 
 #temporary route for viewing/testing slider on metadata
-@app.route("/slider/")
+@app.route("/slider")
 def view_slider():
     return render_template("slider_and_metadata.html")
 
 
-
-
 #Full ranking data for scatterplot and map
-@app.route("/rankings/") #STEVEN: LEAVE THE APP ROUTE IN PLACE
-def db():
+@app.route("/ranking")
+def ranking():
     rankings_data = engine.execute("SELECT * FROM rankings_table").fetchall()
     rankings_headers = engine.execute("SELECT * FROM rankings_table").keys()
 
-    rankings_zipped = []
+    rankings_zip = []
 
     for row in rankings_data:
-        rankings_zipped.append(dict(zip(rankings_headers, row)))
+        rankings_zip.append(dict(zip(rankings_headers, row)))
     
-    return jsonify(rankings_zipped)
-
+    return jsonify(rankings_zip)
 
 
 #This route is for the WC metadata used to show info about each WC alongside the map
