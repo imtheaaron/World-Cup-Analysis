@@ -219,11 +219,16 @@ function countryInfo(country, year) {
             info.push(x.Team);
             info.push(x.Confederation);
             info.push("#" + x[fifaQuery]);
-            if (x[query]) {
-                info.push("Finished #" + x[query])
+            if (year == 2018) {
+                info.push('No results yet')
             }
             else {
-                info.push("Did not Play")
+                if (x[query]) {
+                    info.push("Finished #" + x[query])
+                }
+                else {
+                    info.push("Did not Play")
+                }
             }
         }
     })
