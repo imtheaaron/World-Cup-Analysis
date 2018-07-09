@@ -8,7 +8,7 @@ var fifaColors;
 var cupColors;
 
 var rankings;
-d3.json('/ranking', function(data) {
+d3.json('/rankings/', function(data) {
     rankings = data;
 });
 

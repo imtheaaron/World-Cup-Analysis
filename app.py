@@ -62,18 +62,18 @@ def index():
     return render_template("index.html")
 
 #temporary route for viewing/testing the scatterplot
-@app.route("/scatter")
+@app.route("/scatter/")
 def scatter():
     return render_template("scatterplot.html")
 
 #temporary route for viewing/testing slider on metadata
-@app.route("/slider")
+@app.route("/slider/")
 def view_slider():
     return render_template("slider_and_metadata.html")
 
 
 #Full ranking data for scatterplot and map
-@app.route("/ranking")
+@app.route("/rankings/")
 def ranking():
     rankings_data = engine.execute("SELECT * FROM rankings_table").fetchall()
     rankings_headers = engine.execute("SELECT * FROM rankings_table").keys()
