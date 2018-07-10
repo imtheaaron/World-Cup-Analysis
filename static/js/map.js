@@ -283,18 +283,18 @@ function cupRecordColor(country, year) {
 
     rankings.forEach(x => {
         if (x.ABRV == country) {
-            console.log(x.ABRV + ' cup result: ' + x[cupQuery]);
+            // console.log(x.ABRV + ' cup result: ' + x[cupQuery]);
             if (x[cupQuery]) {
                 //return the results of the function to map x.wcQuery to 
                 finalColor = cupColorScale(x[cupQuery]);
-                console.log(x[cupQuery])
+                // console.log(x[cupQuery])
             }
             else {
                 finalColor = '#d6d9db'
             }
         }
     });
-    console.log('final color: ' + finalColor);
+    // console.log('final color: ' + finalColor);
     return finalColor
 };
 

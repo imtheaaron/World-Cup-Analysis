@@ -6,15 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>World Cup Rankings Analysis</title>
+  
+  <!--CSS stylesheets-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!--our stylesheets-->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/scatter.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/slider.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
   <!--D3 cdn-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+ 
   <!-- Leaflet CSS & JS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
-  <!--our stylesheet-->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
 </head>
 
 <body>
@@ -25,10 +33,10 @@
     </div> 
 
     <div class='row'>
-      <div class='col md-6'>
+      <div class='col-md-6'>
         <div id="map" style="height: 500px; width: 1000px"></div>
       </div>
-      <div class='col md-6'></div>
+      <div class='col-md-6 metadata'></div>
     </div>
 
     <div class='row'>
@@ -39,13 +47,28 @@
       </div>
     </div>
     <!--build the year selector here and call the change function when a new year is selected-->
+    <div class="row">
+      <div class="col-md-6 slider-container">
+            <input type="range" step="4" min="1994" max="2014" value="1994" class="slider" id="mySlider" onchange="yearSelected(this.value)">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 container-fluid" id="scatter">
+        <div class="chart">
+          <!-- d3 will put the scatterplot here -->
+        </div>
+      </div>
+    </div>
+    
     <!-- <select id="selDataset" onchange="yearSelected(this.value)"></select> -->
 
 
 
-<!-- Link to our JS file  -->
-<script src="{{ url_for('static', filename='js/map.js') }}"></script>
-<!-- <script src="{{ url_for('static', filename='js/scatterplot.js') }}"></script> -->
+  <!-- Link to our JS files  -->
+  <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/scatterplot.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/metadata.js') }}"></script>
 
 </body>
 
