@@ -44,8 +44,8 @@
 .sliderticks {
   display: flex;
   justify-content: space-between;
-  padding: 0 20px;
-  width:51.5%;
+  padding: 10px 1px 0px 20px;
+  width:100%;
 }
 
 .sliderticks p {

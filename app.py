@@ -87,7 +87,7 @@ def ranking():
 
 
 #This route is for the WC metadata used to show info about each WC alongside the map
-@app.route("/metadata/<year>/")
+@app.route("/metadata/<year>")
 def metadata(year):
     metadata_data = engine.execute(f"SELECT * FROM metadata_table WHERE Year = {year}").fetchall()
     metadata_headers = engine.execute("SELECT * FROM metadata_table").keys()

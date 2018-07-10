@@ -43,7 +43,7 @@ var slider = document.getElementById("mySlider");
 				var metadataDiv = d3.select(".metadata");
 				metadataDiv.selectAll("*").remove();
 				// metadataDiv.append("text").text(`${year}`)
-				d3.json(`/metadata/${year}/`, function(jsonData) {
+				d3.json(`/metadata/${year}`, function(jsonData) {
 					jsonData.forEach(function(d) {
 						attendance = d.Attendance;
 						fourth = d.Fourth;

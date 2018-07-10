@@ -174,6 +174,12 @@ function makeMap(year) {
 //     let cup_url = "metadata/" + year;
 //     d3.json(cup_url, function(error, response) {
 //         cup_data = response;
+//         d3.select(".card-body").append("P").text("AGE: " + sample_meta.AGE);
+//         d3.select(".card-body").append("P").text("BBTYPE: " + sample_meta.BBTYPE);
+//         d3.select(".card-body").append("P").text("ETHNICITY: " + sample_meta.ETHNICITY);
+//         d3.select(".card-body").append("P").text("GENDER: " + sample_meta.GENDER);
+//         d3.select(".card-body").append("P").text("LOCATION: " + sample_meta.LOCATION);
+//         d3.select(".card-body").append("P").text("SAMPLEID: " + sample_meta.SAMPLEID);
 //         //BUILD THE TEXT COMPONENTS FOR THE DIV WITH WC INFO
 //     })
 // }
