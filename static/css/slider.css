@@ -14,6 +14,10 @@
   position: relative;
 }
 
+/* .slider-container {
+  width: 50%;
+} */
+
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -31,4 +35,27 @@
   border-radius: 50%;
   background: lightseagreen;
   cursor: pointer;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.sliderticks {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  width:51.5%;
+}
+
+.sliderticks p {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  width: 1px;
+  background: #D3D3D3;
+  height: 10px;
+  line-height: 40px;
+  margin: 0 0 20px 0;
 }
