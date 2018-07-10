@@ -246,7 +246,7 @@ function makeResponsive() {
         // PLACE LABELS with same scales we will use to place circles (labels go first bc circles will overlap)
         theCircles
         .append("text")
-        .text(function(d) {return d.ABRV;})
+        .text(function(d) {return d.Display_ABRV;})
         .attr("dx", function(d) {if (d[curY]>0) return xScale(d[curX]); else return 100})
         .attr("dy", function(d) {if (d[curX]>0) return yScale(d[curY]) + getRadius(d[WC_All_Time]) * (0.28/radiusFactor); else return height+labelArea})
         .attr("font-size", function(d) {return (getRadius(d[WC_All_Time])/radiusFactor)-6})
@@ -275,7 +275,7 @@ function makeResponsive() {
         .attr("stroke", "black")
         .attr("stroke-width", 3)
         .attr("class", function(d) {
-          return "stateCircle " + d.ABRV;
+          return "stateCircle " + d.Display_ABRV;
         })
         .on("mouseover", function(d) {
             toolTip.show(d);
