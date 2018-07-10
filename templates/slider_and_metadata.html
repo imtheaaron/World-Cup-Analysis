@@ -11,7 +11,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 	</head>
 	<body>
-		<div class="slider-container">
+		<div class="slider-container" style="width:500px; margin: 0 auto;">
 				<input type="range" step="4" min="1994" max="2018" value="1994" class="slider" id="mySlider">
 				<div class="sliderticks">
 					<p>1994</p>
@@ -23,13 +23,17 @@
 					<p>2018</p>
 				  </div>				
 		</div>
-		<div class="container-fluid" id="scatter">
-			<div class="chart">
-				<!-- d3 will put the scatterplot here -->
-			</div>
+
+		<div>
+			<br>
+			<br>
 		</div>
-		<div class ="metadata">
+
+		<div class ="metadata" style="width:500px; margin: 0 auto;">
+			<!-- d3 will place metadata here -->
 		</div>
+
+
 		<script>
 			var slider = document.getElementById("mySlider");
 			d3.select(slider).on("mouseup", function() {
