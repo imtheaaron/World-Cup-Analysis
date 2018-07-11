@@ -6,7 +6,7 @@ makeResponsive();
 function makeResponsive() {
     
     //if the svg already exists, remove it so we can start fresh
-    var svgArea = d3.select("body").select("svg");
+    var svgArea = d3.select(".chart").select("svg");
     if (!svgArea.empty()) {
         svgArea.remove();
       }
@@ -304,8 +304,8 @@ function makeResponsive() {
             yMinMax();
             xScale.domain([xMax, xMin]);
             yScale.domain([yMin, yMax]);
-            svg.select(".xAxis").transition().duration(6000).call(xAxis.ticks(5));
-            svg.select(".yAxis").transition().duration(6000).call(yAxis);
+            svg.select(".xAxis").transition().duration(2000).call(xAxis.ticks(5));
+            svg.select(".yAxis").transition().duration(2000).call(yAxis);
             // Each state circle gets a transition for it's new attribute.
             d3.selectAll("circle").each(function() {
               d3.select(this)
@@ -318,7 +318,7 @@ function makeResponsive() {
                 else
                   return 0.7;
               })
-              .duration(6000);
+              .duration(2000);
               });
         
             // We need change the location of the state texts, too.
@@ -333,7 +333,7 @@ function makeResponsive() {
                 else
                   return 0.7;
               })
-              .duration(6000);
+              .duration(2000);
               });
           });
   
