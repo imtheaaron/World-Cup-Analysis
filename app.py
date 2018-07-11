@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import create_engine
 import pandas as pd
+import json
 
 app = Flask(__name__)
 
@@ -40,26 +41,18 @@ app = Flask(__name__)
 
 # create an engine to conenct to our database and perform sql queries
 #---------------------------------
-<<<<<<< HEAD
-engine = create_engine('sqlite:///db/world_cup_db', echo=False)
-=======
-engine = create_engine('sqlite:///C:\\Users\\zulim2\\Downloads\\Analytics\\World-Cup-Analysis\\data\\world_cup_db.db', echo=False)
->>>>>>> e76370a15fa22a8a6ec26a840e4ec7033e542d2d
-conn = engine.connect()
+#Steven absolute address code"
+# engine = create_engine('sqlite:///C:\\Users\\zulim2\\Downloads\\Analytics\\World-Cup-Analysis\\data\\world_cup.db', echo=False)
 
-Base = automap_base()
-Base.prepare(engine, reflect=True)
-session = Session(engine)
+engine = create_engine('sqlite:///data/world_cup.db', echo=False)
 
-# if statement that sets year = to certain year
-year = 1994
-
-df = pd.DataFrame(engine.execute(f"SELECT team, abrv, WC_{year}, FIFA_{year} FROM world_cup_db WHERE WC_{year} > 0").fetchall()) 
-df
+# Base = automap_base()
+# Base.prepare(engine, reflect=True)
+# session = Session(engine)
 
 # reflect the db tables into classes
 #-------------------------------
-rankings_data = Base.classes.world_cup_db
+#rankings_data = Base.classes.world_cup_db
 # cup_data = Base.classes.'NAME FOR DATABASE WITH METADATA FOR EACH WORLD CUP'
 
 # Flask Routes
@@ -68,27 +61,45 @@ rankings_data = Base.classes.world_cup_db
 def index():
     return render_template("index.html")
 
-#grab the data on each country's rankings from the table for the specified year
-@app.route("/db") #STEVEN: LEAVE THE APP ROUTE IN PLACE
-def db():
-    db_query = session.query(select * from rankings_data)
-    rankings = db.query
-    return jsonify(rankings) #STEVEN: LEAVE THE RETURN NAME 'RANKINGS' IN PLACE
+#temporary route for viewing/testing the scatterplot
+@app.route("/scatter/")
+def scatter():
+    return render_template("scatterplot.html")
 
-#grab the world cup metadata for the specified year
-# @app.route("/cup_data/<year>")
-# def cup_data(year):
-#     year_query = session.query(cup_data.STUFF!, metadata.BBTYPE, metadata.ETHNICITY, metadata.GENDER, metadata.LOCATION, metadata.SAMPLEID).\
-#         filter(cup_data.year).one()
-#     year_dict = {
-#         # 'AGE': meta_one[0], 
-#         # 'BBTYPE': meta_one[1], 
-#         # 'ETHNICITY': meta_one[2], 
-#         # 'GENDER': meta_one[3], 
-#         # 'LOCATION': meta_one[4], 
-#         # 'SAMPLEID': meta_one[5]
-#         # }
-#     return jsonify(year_dict)
+#temporary route for viewing/testing slider on metadata
+@app.route("/slider/")
+def view_slider():
+    return render_template("slider_and_metadata.html")
+
+
+#Full ranking data for scatterplot and map
+@app.route("/rankings/")
+def ranking():
+    rankings_data = engine.execute("SELECT * FROM rankings_table").fetchall()
+    rankings_headers = engine.execute("SELECT * FROM rankings_table").keys()
+
+    rankings_zip = []
+
+    for row in rankings_data:
+        rankings_zip.append(dict(zip(rankings_headers, row)))
+    
+    return jsonify(rankings_zip)
+
+
+#This route is for the WC metadata used to show info about each WC alongside the map
+@app.route("/metadata/<year>/")
+def metadata(year):
+    metadata_data = engine.execute(f"SELECT * FROM metadata_table WHERE Year = {year}").fetchall()
+    metadata_headers = engine.execute("SELECT * FROM metadata_table").keys()
+
+    metadata = []
+
+    for row in metadata_data:
+        metadata.append(dict(zip(metadata_headers, row)))
+    
+    return jsonify(metadata)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
