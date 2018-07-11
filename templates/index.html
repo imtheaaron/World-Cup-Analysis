@@ -28,17 +28,23 @@
 
 <body>
 
-    <div class="jumbotron jumbotron-image" style="text-align: center">
-        <h1>World Cup</h1>
-        <h1>Rankings Analysis</h1>
+    <div class="row" style="padding-left: 100px">
+        <h1>World Cup Performance Analysis</h1>
     </div> 
 
+    <div class="row">
+      <div class="col-md-12 introtext" style="padding-left: 100px; padding-right: 200px; padding-bottom: 20px; margin-top: 30px">
+        <p><span class="first-letters">Once every four years </span>the best soccer (football) teams from around the world gather to compete for the FIFA World Cup.</p>
+        <hr>
+      </div>
+    </div>
+
     <div class='row'>
-      <div class='col-md-7'>
+      <div class='col-md-7' style="padding-left: 100px">
         <div id="map" style="height: 500px"></div>
       </div>
-      <div class='col-md-5 metadata'>
-          <div class="card" style="width: 18rem;">
+      <div class='col-md-4 metadata'>
+          <div class="card" style="width: 27rem; padding-left: 50px; padding-top: 25px">
               <div class="card-body">
                 <h4 class="card-top-text">World Cup Information</h4><hr>
               </div>
@@ -56,7 +62,7 @@
     
     <!--build the year slider for years here and call the change function when a new year is selected-->
     <div class="row">
-      <div class="col-md-6 slider-container">
+      <div class="col-md-6 slider-container" style="padding-left: 150px">
             <input type="range" step="4" min="1994" max="2018" value="1994" class="slider" id="mySlider" onchange="yearSelected(this.value)">
             <div class="sliderticks">
                 <p>1994</p>
@@ -75,6 +81,12 @@
         <div class="chart">
           <!-- d3 will put the scatterplot here -->
         </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 footer">
+        <p>Copyright 2018 Steven Zulim and Aaron Burke</p>
       </div>
     </div>
 

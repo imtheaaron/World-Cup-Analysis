@@ -17,19 +17,48 @@
 .card-body {
     line-height: 18px;
     color: rgb(138, 138, 138);
-    background: rgb(136, 41, 41);
+    background: rgb(255, 255, 255);
     border-radius: 5px;
+    /* border: rgb(136, 41, 41); */
     padding: 6px 8px;
 }
 
 .card-body p {
-    color: white
+    color: rgb(46, 46, 46);
+    font-size: 15px
 }
 
 .card-body h3 {
-    color: white
+    color: rgb(173, 25, 25)
 }
 
 .card-body h4 {
+    color: rgb(173, 25, 25)
+}
+
+.introtext {
+    font-size: 20px
+}
+
+.first-letters {
+    font-size: 30px;
+    color: rgb(175, 13, 13);
+}
+
+.footer {
+    background-color: #555;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 15px;
+    margin-top: 30px
+}
+
+.footer p {
     color: white
+}
+
+h1 {
+    font-size: 50px;
+    /* font-variant: small-caps; */
+    color: rgb(146, 19, 19);
 }
