@@ -16,31 +16,15 @@ d3.json('/rankings/', function(data) {
 function init() {
     // function to build the map with 1994 data
     let year = '1994';
-    // selector();
     makeMap(year);
-    // makeMetaData(year);
-    // scatter(year);
-        // slider(); 
+    makeMetaData(year);
 };
-
-// function selector() {
-//     var wcYears = ['1994', '1998', '2002', '2006', '2010', '2014', '2018'];
-
-//     var select = document.getElementById("yearSet");
-//     for(var i = 0; i < wcYears.length; i++) {
-//         var id = wcYears[i];
-//         var el = document.createElement("option");
-//         el.textContent = id;
-//         el.value = id;
-//         select.appendChild(el);
-//     }
-// };
 
 // function to grab a year from the slider and recreate the map from that year data
 function yearSelected(value) {
     var year = value;
     reColorMap(year);
-    // makeMetaData(year);
+    makeMetaData(year);
 };
  
 // create the map with country colors for the specified year
@@ -170,19 +154,28 @@ function makeMap(year) {
 };
 
 //create the metadata info on the specified world cup year
-// function makeMetaData(year) {
-//     let cup_url = "metadata/" + year;
-//     d3.json(cup_url, function(error, response) {
-//         cup_data = response;
-//         d3.select(".card-body").append("P").text("AGE: " + sample_meta.AGE);
-//         d3.select(".card-body").append("P").text("BBTYPE: " + sample_meta.BBTYPE);
-//         d3.select(".card-body").append("P").text("ETHNICITY: " + sample_meta.ETHNICITY);
-//         d3.select(".card-body").append("P").text("GENDER: " + sample_meta.GENDER);
-//         d3.select(".card-body").append("P").text("LOCATION: " + sample_meta.LOCATION);
-//         d3.select(".card-body").append("P").text("SAMPLEID: " + sample_meta.SAMPLEID);
-//         //BUILD THE TEXT COMPONENTS FOR THE DIV WITH WC INFO
-//     })
-// }
+function makeMetaData(year) {
+    let cup_url = "metadata/" + year + "/";
+    d3.json(cup_url, function(error, response) {
+        cup_data = response;
+        console.log(cup_data[0]);
+        d3.select(".card-body").html(`<h3 class="card-top-text">World Cup ${year}</h3><hr>`);
+        if (year == 2018) {
+            d3.select(".card-body").append("P").text("No information yet on 2018 World Cup");
+        }
+        else {
+            d3.select(".card-body").append("P").text("Host Country: " + cup_data[0].Host);
+            d3.select(".card-body").append("P").text("Attendance: " + cup_data[0].Attendance + " Million");
+            d3.select(".card-body").append("P").text("Number of Teams: " + cup_data[0].QualifiedTeams);
+            d3.select(".card-body").append("P").text("Total Goals Scored: " + cup_data[0].GoalsScored);
+            d3.select(".card-body").append("hr");
+            d3.select(".card-body").append("h4").text("Results");
+            d3.select(".card-body").append("P").text("Winner: " + cup_data[0].Winner);
+            d3.select(".card-body").append("P").text("Runner-Up: " + cup_data[0]['Runners-Up']);
+            d3.select(".card-body").append("P").text("Third Place: " + cup_data[0].Third);
+        }
+    })
+};
 
 //generates data on each country to make popups
 function countryInfo(country, year) {
@@ -190,10 +183,21 @@ function countryInfo(country, year) {
     let query = "WC_" + year;
     let fifaQuery = "FIFA_" + year;
     rankings.forEach(x => {
-        if (x.ABRV == country) {
+        if (country == 'GRL') {
+            info.push("Greenland")
+            info.push("No team")
+            info.push("None")
+            info.push("None")
+        }
+        else if (x.ABRV == country) {
             info.push(x.Team);
             info.push(x.Confederation);
-            info.push("#" + x[fifaQuery]);
+            if (x[fifaQuery]) {
+                info.push("#" + x[fifaQuery]);
+            }
+            else {
+                info.push('No ranking')
+            };
             if (year == 2018) {
                 info.push('No results yet')
             }
