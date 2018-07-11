@@ -157,15 +157,18 @@ function makeMap(year) {
 function makeMetaData(year) {
     let cup_url = "metadata/" + year + "/";
     d3.json(cup_url, function(error, response) {
-        cup_data = response;
-        console.log(cup_data[0]);
+        let cup_data = response;
         d3.select(".card-body").html(`<h3 class="card-top-text">World Cup ${year}</h3><hr>`);
         if (year == 2018) {
             d3.select(".card-body").append("P").text("No information yet on 2018 World Cup");
         }
         else {
+            let attendance = String(cup_data[0].Attendance);
+            attendance = attendance.slice(0,4);
+            
+            d3.select(".card-body").append("h4").text("Details");
             d3.select(".card-body").append("P").text("Host Country: " + cup_data[0].Host);
-            d3.select(".card-body").append("P").text("Attendance: " + cup_data[0].Attendance + " Million");
+            d3.select(".card-body").append("P").text("Attendance: " + attendance + " Million");
             d3.select(".card-body").append("P").text("Number of Teams: " + cup_data[0].QualifiedTeams);
             d3.select(".card-body").append("P").text("Total Goals Scored: " + cup_data[0].GoalsScored);
             d3.select(".card-body").append("hr");
