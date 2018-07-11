@@ -1,0 +1,34 @@
+.tooltip {
+  /* position: absolute; */
+  /* width: 88px;
+  height: 120px; commenting these out will make them size dynamically*/
+  opacity: 1;
+  padding: 7px;
+  line-height: 1;
+  line-height: 1.5em;
+  max-width: 200px;
+  font: 14px sans-serif;
+  text-align: left;
+  color: white;
+  background: lightslategray;
+  background-color:rgba(119, 136, 153, 0.9);
+  border: 0;
+  border-radius: 10px;
+  word-wrap: break-word;
+}
+
+.chart {
+  margin-top: 40px;
+}
+
+.countryText {
+  font-family: sans-serif;
+  fill: black;
+  text-anchor: middle;
+}
+
+.performanceText {
+  font-family: sans-serif;
+  fill: lightgrey;
+  font-size: 35px;
+}

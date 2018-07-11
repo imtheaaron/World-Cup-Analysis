@@ -6,32 +6,103 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>World Cup Rankings Analysis</title>
+  
+  <!--CSS stylesheets-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!--our stylesheets-->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/scatter.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/slider.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
   <!--D3 cdn-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script> -->
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+ 
   <!-- Leaflet CSS & JS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
-  <!--our stylesheet-->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
 </head>
 
 <body>
 
-    <div class="jumbotron jumbotron-image" style="text-align: center">
-        <h1>World Cup</h1>
-        <h1>Rankings Analysis</h1>
+    <div class="row" style="padding-left: 100px">
+        <h1>World Cup Performance Analysis</h1>
     </div> 
 
-    <div id="map"></div>
+    <div class="row">
+      <div class="col-md-12 introtext" style="padding-left: 100px; padding-right: 200px; padding-bottom: 20px; margin-top: 30px">
+        <p><span class="first-letters">Once every four years </span>the best soccer (football) teams from around the world gather to compete for the FIFA World Cup.
+        Each team receives a algorithmically generated ranking from FIFA; even those countries not competing receive a ranking.</p>
+        <p>We analyzed and mapped the rankings of every country from around the world since 1994 and compared those rankings to tournament performace to
+          observe whether a strong correlation exists between ranking and performance, and whether some countries tend to over or underperform their rankings.
+        </p>
+        <hr>
+      </div>
+    </div>
 
-    <!--build the year selector here and call the change function when a new year is selected-->
-    <select id="selDataset" onchange="yearSelected(this.value)"></select>
+    <div class='row'>
+      <div class='col-md-7' style="padding-left: 100px">
+        <p class="captiontext" style="text-align: center">Rankings and Performance by Country</p>
+        <div id="map" style="height: 500px"></div>
+      </div>
+      <div class='col-md-4 metadata'>
+          <div class="card" style="width: 27rem; padding-left: 50px; padding-top: 25px">
+              <div class="card-body">
+                <h4 class="card-top-text">World Cup Information</h4><hr>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <div class='row'>
+      <div class='col-md-2'>&nbsp;</div>
+      <!-- <div class='col-md-2'>
+        <h3>Select a Year</h3>  
+        <select id="yearSet" onchange="yearSelected(this.value)"></select>
+      </div> -->
+    </div>
+    
+    <!--build the year slider for years here and call the change function when a new year is selected-->
+    <div class="row">
+      <div class="col-md-6 slider-container" style="padding-left: 150px">
+            <input type="range" step="4" min="1994" max="2018" value="1994" class="slider" id="mySlider" onchange="yearSelected(this.value)">
+            <div class="sliderticks">
+                <p>1994</p>
+                <p>1998</p>
+                <p>2002</p>
+                <p>2006</p>
+                <p>2010</p>
+                <p>2014</p>
+                <p>2018</p>
+            </div>   
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <p class="captiontext" style="text-align: center; margin-top: 30px">FIFA Ranking vs. World Cup Performance</p>
+      </div>
+      <div class="container-fluid" id="scatter">
+        <div class="chart">
+          <!-- d3 will put the scatterplot here -->
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 footer">
+        <p>Copyright 2018 Steven Zulim and Aaron Burke</p>
+      </div>
+    </div>
 
 
-
-<!-- Link to our JS file  -->
-<script src="{{ url_for('static', filename='js/logic.js') }}"></script>
+  <!-- Link to our JS files  -->
+  <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/scatterplot.js') }}"></script>
+  <!-- <script src="{{ url_for('static', filename='js/metadata.js') }}"></script> -->
 
 </body>
 
