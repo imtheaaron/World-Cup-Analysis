@@ -265,7 +265,8 @@ function makeResponsive() {
         .attr("cx", function(d) {if (d[curY]>0) return xScale(d[curX]); else return 100})
         .attr("cy", function(d) {if (d[curX]>0) return yScale(d[curY]); else return height+labelArea})
         .attr("r", function(d) {return getRadius(d[WC_All_Time])/radiusFactor;})
-        .attr("fill", "lightseagreen")
+        // .attr("fill", "lightseagreen")
+        .attr("fill", "IndianRed")
         .attr("opacity", function(d) {
           if (d[curY]<1) 
             return 0;
@@ -283,7 +284,8 @@ function makeResponsive() {
         })
         .on("mouseout", function(d) {
             toolTip.hide(d);
-            d3.select(this).style("fill", "lightseagreen");
+            // d3.select(this).style("fill", "lightseagreen");
+            d3.select(this).style("fill", "IndianRed");
         });
 
 

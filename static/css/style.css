@@ -13,3 +13,23 @@
     margin-right: 8px;
     opacity: 0.7;
 }
+
+.card-body {
+    line-height: 18px;
+    color: rgb(138, 138, 138);
+    background: rgb(136, 41, 41);
+    border-radius: 5px;
+    padding: 6px 8px;
+}
+
+.card-body p {
+    color: white
+}
+
+.card-body h3 {
+    color: white
+}
+
+.card-body h4 {
+    color: white
+}

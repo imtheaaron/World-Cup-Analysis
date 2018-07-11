@@ -25,7 +25,8 @@
   height: 25px;
   text-align: center;
   border-radius: 50%; 
-  background: lightseagreen;
+  /* background: lightseagreen; */
+  background: rgb(136, 41, 41);
   cursor: pointer;
 }
 
@@ -33,7 +34,8 @@
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background: lightseagreen;
+  /* background: lightseagreen; */
+  background: rgb(136, 41, 41);
   cursor: pointer;
 }
 
