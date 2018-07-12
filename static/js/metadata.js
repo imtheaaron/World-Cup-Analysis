@@ -55,6 +55,7 @@ var slider = document.getElementById("mySlider");
 						third = d.Third;
 						winner = d.Winner;
 						wc_year = d.Year;
+						R_Squared = d.R_Squared;
 					});
 					metadataDiv.append("text").text(
 					`Year: ${wc_year}
@@ -66,7 +67,8 @@ var slider = document.getElementById("mySlider");
 					QualifiedTeams: ${qualifiedTeams}
 					Runners-Up: ${runnerUp}
 					Third: ${third}
-					Winner: ${winner}`
+					Winner: ${winner}
+					R Squared Correlation: ${R_Squared}`
 					);
 				})
           	});

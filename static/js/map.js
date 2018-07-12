@@ -137,7 +137,7 @@ function makeMap(year) {
                 "#80002a"
             ]
             labels = [];
-            div.innerHTML = "<h4>Rankings/<br>Results</h4>";
+            // div.innerHTML = "<h4>Rankings/<br>Results</h4>";
 
             // loop through our density intervals and generate a label with a colored square for each interval
             for (var i = 0; i < limits.length; i++) {

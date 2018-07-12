@@ -4,8 +4,6 @@
   height: 120px; commenting these out will make them size dynamically*/
   opacity: 1;
   padding: 7px;
-  line-height: 1;
-  line-height: 1.5em;
   max-width: 200px;
   font: 14px sans-serif;
   text-align: left;
@@ -18,7 +16,8 @@
 }
 
 .chart {
-  margin-top: 40px;
+  margin-top: 0px;
+  margin-bottom: 40px;
 }
 
 .countryText {

@@ -12,8 +12,8 @@ function makeResponsive() {
       }
     
     //base measurements on window dimensions
-    var svgWidth = window.innerWidth - 100;
-    var svgHeight = window.innerHeight - 100;
+    var svgWidth = window.innerWidth*0.90;
+    var svgHeight = window.innerHeight*0.75;
 
     var margin = {
         top: 50,
@@ -108,7 +108,7 @@ function makeResponsive() {
         .attr("class", "tooltip")
         .offset([80, 145])
         .html(function(d) {
-            return (`<h3>${d.Team}</h3><strong>FIFA Rank: ${Math.round(d[FIFA_Rank])}<br>World Cup Finish: ${Math.round(d[curY])}<br></strong><br>All Time World Cup Rank: ${(Math.round(d[WC_All_Time]))}`);
+            return (`<strong><h3>${d.Team}</h3>FIFA Rank: ${Math.round(d[FIFA_Rank])}<br>World Cup Finish: ${Math.round(d[curY])}<br></strong><br>All Time World Cup Rank: ${(Math.round(d[WC_All_Time]))}`);
         });
         svg.call(toolTip); //?? why do we call toolTip on the SVG??//
 
@@ -248,7 +248,10 @@ function makeResponsive() {
         .append("text")
         .text(function(d) {return d.Display_ABRV;})
         .attr("dx", function(d) {if (d[curY]>0) return xScale(d[curX]); else return 100})
-        .attr("dy", function(d) {if (d[curX]>0) return yScale(d[curY]) + getRadius(d[WC_All_Time]) * (0.28/radiusFactor); else return height+labelArea})
+        .attr("dy", function(d) {
+          if (d[curX]>0) return yScale(d[curY]) + getRadius(d[WC_All_Time]) * (0.28/radiusFactor); 
+          else return height+labelArea
+        })
         .attr("font-size", function(d) {return (getRadius(d[WC_All_Time])/radiusFactor)-6})
         .attr("class", "countryText")
         .attr("opacity", function(d) {

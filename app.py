@@ -61,7 +61,12 @@ engine = create_engine('sqlite:///data/world_cup.db', echo=False)
 def index():
     return render_template("index.html")
 
-#temporary route for viewing/testing the scatterplot
+#route for viewing/testing the scatterplot
+@app.route("/line/")
+def line():
+    return render_template("line_chart.html")
+
+#route for viewing/testing the scatterplot
 @app.route("/scatter/")
 def scatter():
     return render_template("scatterplot.html")
@@ -98,6 +103,7 @@ def metadata(year):
         metadata.append(dict(zip(metadata_headers, row)))
     
     return jsonify(metadata)
+
 
 
 

@@ -7,23 +7,25 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>World Cup Rankings Analysis</title>
   
-  <!--CSS stylesheets-->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <!--our stylesheets-->
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/scatter.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/slider.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  
-  <!--D3 cdn-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script> -->
-  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+
  
   <!-- Leaflet CSS & JS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
   
+  <!--CSS stylesheets-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+
+  <!--our stylesheets-->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/scatter.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/slider.css') }}">    
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <!--D3 cdn-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+
 </head>
 
 <body>
@@ -46,12 +48,12 @@
     </div>
 
     <div class='row'>
-      <div class='col-md-7' style="padding-left: 150px">
+      <div class='col-md-8' style="padding-left: 150px">
         <p class="captiontext" style="text-align: center">Rankings and Performance by Country</p>
         <div id="map" style="height: 500px"></div>
       </div>
       <div class='col-md-4 metadata'>
-          <div class="card" style="width: 27rem; padding-left: 50px; padding-top: 25px">
+          <div class="card" style="width: 300px; padding-left: 50px; padding-top: 25px">
               <div class="card-body">
                 <h4 class="card-top-text">World Cup Information</h4><hr>
               </div>
@@ -65,7 +67,7 @@
     
     <!--build the year slider for years here and call the change function when a new year is selected-->
     <div class="row">
-      <div class="col-md-6 slider-container" style="padding-left: 225px">
+      <div class="col-md-7 slider-container" style="padding-left: 225px">
             <input type="range" step="4" min="1994" max="2018" value="1994" class="slider" id="mySlider" onchange="yearSelected(this.value)">
             <div class="sliderticks">
                 <p>1994</p>
